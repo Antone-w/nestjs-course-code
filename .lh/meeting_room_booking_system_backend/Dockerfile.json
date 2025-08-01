@@ -1,0 +1,18 @@
+{
+    "sourceFile": "meeting_room_booking_system_backend/Dockerfile",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754031460377,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754031460377,
+            "name": "Commit-0",
+            "content": "FROM node:20.0 AS build-stage\r\n\r\nWORKDIR /app\r\n\r\nCOPY package.json .\r\n\r\nRUN npm config set registry https://registry.npmmirror.com/\r\n\r\nRUN npm install\r\n\r\nCOPY . .\r\n\r\nRUN npm run build\r\n\r\n# production stage\r\nFROM node:20.0 AS production-stage\r\n\r\nCOPY --from=build-stage /app/dist /app\r\nCOPY --from=build-stage /app/package.json /app/package.json\r\n\r\nWORKDIR /app\r\n\r\nRUN npm config set registry https://registry.npmmirror.com/\r\n\r\nRUN npm install --production\r\n\r\nEXPOSE 3005\r\n\r\nCMD [\"node\", \"/app/main.js\"]"
+        }
+    ]
+}

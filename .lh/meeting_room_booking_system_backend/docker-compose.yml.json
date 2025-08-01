@@ -1,0 +1,18 @@
+{
+    "sourceFile": "meeting_room_booking_system_backend/docker-compose.yml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754031863037,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754031863037,
+            "name": "Commit-0",
+            "content": "# version: '3.8'\r\nservices:\r\n  nest-app:\r\n    build:\r\n      context: ./\r\n      dockerfile: ./Dockerfile\r\n    depends_on:\r\n      - mysql-container\r\n      - redis-container\r\n    ports:\r\n      - 3005:3005\r\n    networks:\r\n      - common-network\r\n  mysql-container:\r\n    image: mysql\r\n    volumes:\r\n      - /Users/guang/mysql-data:/var/lib/mysql\r\n    environment:\r\n      MYSQL_DATABASE: meeting_room_booking_system\r\n      MYSQL_ROOT_PASSWORD: guang\r\n    networks:\r\n      - common-network\r\n  redis-container:\r\n    image: redis\r\n    volumes:\r\n      - /Users/guang/redis-data:/data\r\n    networks:\r\n      - common-network\r\nnetworks:\r\n  common-network:\r\n    driver: bridge"
+        }
+    ]
+}
