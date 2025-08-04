@@ -1,0 +1,18 @@
+{
+    "sourceFile": "meeting_room_booking_system_backend/src/app.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754275684986,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754275684986,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\nimport { TypeOrmModule } from '@nestjs/typeorm';\nimport { AppController } from './app.controller';\nimport { AppService } from './app.service';\nimport { UserModule } from './user/user.module';\nimport { User } from './user/entities/user.entity';\nimport { Role } from './user/entities/role.entity';\nimport { Permission } from './user/entities/permission.entity';\nimport { RedisModule } from './redis/redis.module';\nimport { EmailModule } from './email/email.module';\nimport { ConfigModule } from '@nestjs/config';\nimport { ConfigService } from '@nestjs/config';\nimport { JwtModule } from '@nestjs/jwt';\nimport { LoginGuard } from './login.guard';\nimport { APP_GUARD } from '@nestjs/core';\nimport { PermissionGuard } from './permission.guard';\nimport { MeetingRoomModule } from './meeting-room/meeting-room.module';\nimport { MeetingRoom } from './meeting-room/entities/meeting-room.entity';\nimport { BookingModule } from './booking/booking.module';\nimport { Booking } from './booking/entities/booking.entity';\nimport { StatisticModule } from './statistic/statistic.module';\nimport * as path from 'path';\n\n@Module({\n  imports: [\n    UserModule,\n    JwtModule.registerAsync({\n      global: true,\n      useFactory(configService: ConfigService) {\n        return {\n          secret: configService.get('jwt_secret'),\n          signOptions: {\n            expiresIn: '30m', // 默认 30 分钟\n          },\n        };\n      },\n      inject: [ConfigService],\n    }),\n    ConfigModule.forRoot({\n      isGlobal: true,\n      // envFilePath: 'src/.env',\n      envFilePath: path.join(__dirname, '.env')\n    }),\n    TypeOrmModule.forRootAsync({\n      useFactory(configService: ConfigService) {\n        return {\n          type: 'mysql',\n          host: configService.get('mysql_server_host'),\n          port: configService.get('mysql_server_port'),\n          username: configService.get('mysql_server_username'),\n          password: configService.get('mysql_server_password'),\n          database: configService.get('mysql_server_database'),\n          synchronize: true,\n          logging: true,\n          entities: [User, Role, Permission, MeetingRoom, Booking],\n          poolSize: 10,\n          connectorPackage: 'mysql2',\n          extra: {\n            authPlugin: 'sha256_password',\n          },\n        };\n      },\n      inject: [ConfigService],\n    }),\n    RedisModule,\n    EmailModule,\n    MeetingRoomModule,\n    BookingModule,\n    StatisticModule,\n  ],\n  controllers: [AppController],\n  providers: [\n    AppService,\n    {\n      provide: APP_GUARD,\n      useClass: LoginGuard,\n    },\n    {\n      provide: APP_GUARD,\n      useClass: PermissionGuard,\n    },\n  ],\n})\nexport class AppModule {}\n"
+        }
+    ]
+}
