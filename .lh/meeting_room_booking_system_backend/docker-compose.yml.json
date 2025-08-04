@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1754031863037,
@@ -20,6 +20,38 @@
                 {
                     "date": 1754288968512,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-# version: '3.8'\r\n+version: '3.8'\r\n services:\r\n   nest-app:\r\n     build:\r\n       context: ./\r\n"
+                },
+                {
+                    "date": 1754291594551,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,8 +10,9 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n+    restart: unless-stopped\r\n   mysql-container:\r\n     image: mysql\r\n     volumes:\r\n       - /Users/guang/mysql-data:/var/lib/mysql\r\n"
+                },
+                {
+                    "date": 1754291808504,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,8 +6,9 @@\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n       - mysql-container\r\n       - redis-container\r\n+    restart: always\r\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n@@ -18,14 +19,16 @@\n       - /Users/guang/mysql-data:/var/lib/mysql\r\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n+    restart: always\r\n     networks:\r\n       - common-network\r\n   redis-container:\r\n     image: redis\r\n     volumes:\r\n       - /Users/guang/redis-data:/data\r\n+    restart: always\r\n     networks:\r\n       - common-network\r\n networks:\r\n   common-network:\r\n"
+                },
+                {
+                    "date": 1754291911686,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,8 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n-    restart: unless-stopped\r\n   mysql-container:\r\n     image: mysql\r\n     volumes:\r\n       - /Users/guang/mysql-data:/var/lib/mysql\r\n"
+                },
+                {
+                    "date": 1754292152912,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,15 +19,19 @@\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n     restart: always\r\n+    ports:\r\n+      - 3306:3306\r\n     networks:\r\n       - common-network\r\n   redis-container:\r\n     image: redis\r\n     volumes:\r\n       - /Users/guang/redis-data:/data\r\n     restart: always\r\n+    ports:\r\n+      - 6379:6379\r\n     networks:\r\n       - common-network\r\n networks:\r\n   common-network:\r\n"
+                },
+                {
+                    "date": 1754292239964,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,19 +19,15 @@\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n     restart: always\r\n-    ports:\r\n-      - 3306:3306\r\n     networks:\r\n       - common-network\r\n   redis-container:\r\n     image: redis\r\n     volumes:\r\n       - /Users/guang/redis-data:/data\r\n     restart: always\r\n-    ports:\r\n-      - 6379:6379\r\n     networks:\r\n       - common-network\r\n networks:\r\n   common-network:\r\n"
+                },
+                {
+                    "date": 1754293962407,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n version: '3.8'\r\n services:\r\n   nest-app:\r\n+    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n@@ -11,24 +12,51 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n+    environment:\r\n+      - NODE_ENV=production\r\n+      - redis_server_host=redis-container\r\n+      - redis_server_port=6379\r\n+      - redis_server_db=0\r\n+      - mysql_server_host=mysql-container\r\n+      - mysql_server_port=3306\r\n+      - mysql_server_username=root\r\n+      - mysql_server_password=guang\r\n+      - mysql_server_database=meeting_room_booking_system\r\n+      - jwt_secret=your-secret-key\r\n+    volumes:\r\n+      - ./uploads:/app/uploads\r\n   mysql-container:\r\n-    image: mysql\r\n+    container_name: mysql-container\r\n+    image: mysql:8.0\r\n     volumes:\r\n-      - /Users/guang/mysql-data:/var/lib/mysql\r\n+      - mysql_data:/var/lib/mysql\r\n\\ No newline at end of file\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n+      MYSQL_USER: meeting_user\r\n+      MYSQL_PASSWORD: meeting_password\r\n     restart: always\r\n     networks:\r\n       - common-network\r\n+    ports:\r\n+      - 3306:3306\r\n   redis-container:\r\n-    image: redis\r\n+    container_name: redis-container\r\n+    image: redis:7-alpine\r\n     volumes:\r\n-      - /Users/guang/redis-data:/data\r\n+      - redis_data:/data\r\n     restart: always\r\n     networks:\r\n       - common-network\r\n+    ports:\r\n+      - 6379:6379\r\n networks:\r\n   common-network:\r\n-    driver: bridge\n+    driver: bridge\r\n+    name: meeting-room-network\r\n+volumes:\r\n+  mysql_data:\r\n+    driver: local\r\n+  redis_data:\r\n+    driver: local\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1754294039122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n version: '3.8'\r\n services:\r\n   nest-app:\r\n-    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n@@ -12,51 +11,24 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n-    environment:\r\n-      - NODE_ENV=production\r\n-      - redis_server_host=redis-container\r\n-      - redis_server_port=6379\r\n-      - redis_server_db=0\r\n-      - mysql_server_host=mysql-container\r\n-      - mysql_server_port=3306\r\n-      - mysql_server_username=root\r\n-      - mysql_server_password=guang\r\n-      - mysql_server_database=meeting_room_booking_system\r\n-      - jwt_secret=your-secret-key\r\n-    volumes:\r\n-      - ./uploads:/app/uploads\r\n   mysql-container:\r\n-    container_name: mysql-container\r\n-    image: mysql:8.0\r\n+    image: mysql\r\n     volumes:\r\n-      - mysql_data:/var/lib/mysql\r\n+      - /Users/guang/mysql-data:/var/lib/mysql\r\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n-      MYSQL_USER: meeting_user\r\n-      MYSQL_PASSWORD: meeting_password\r\n     restart: always\r\n     networks:\r\n       - common-network\r\n-    ports:\r\n-      - 3306:3306\r\n   redis-container:\r\n-    container_name: redis-container\r\n-    image: redis:7-alpine\r\n+    image: redis\r\n     volumes:\r\n-      - redis_data:/data\r\n+      - /Users/guang/redis-data:/data\r\n     restart: always\r\n     networks:\r\n       - common-network\r\n-    ports:\r\n-      - 6379:6379\r\n networks:\r\n   common-network:\r\n-    driver: bridge\r\n-    name: meeting-room-network\r\n-volumes:\r\n\\ No newline at end of file\n-  mysql_data:\r\n-    driver: local\r\n-  redis_data:\r\n-    driver: local\n+    driver: bridge\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1754294124408,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n version: '3.8'\r\n services:\r\n   nest-app:\r\n+    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n"
                 }
             ],
             "date": 1754031863037,

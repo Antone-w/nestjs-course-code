@@ -1,12 +1,14 @@
 version: '3.8'
 services:
   nest-app:
+    container_name: nest-app
     build:
       context: ./
       dockerfile: ./Dockerfile
     depends_on:
       - mysql-container
       - redis-container
+    restart: always
     ports:
       - 3005:3005
     networks:
@@ -18,12 +20,14 @@ services:
     environment:
       MYSQL_DATABASE: meeting_room_booking_system
       MYSQL_ROOT_PASSWORD: guang
+    restart: always
     networks:
       - common-network
   redis-container:
     image: redis
     volumes:
       - /Users/guang/redis-data:/data
+    restart: always
     networks:
       - common-network
 networks:
