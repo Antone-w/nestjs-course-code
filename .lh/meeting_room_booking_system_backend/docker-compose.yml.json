@@ -3,11 +3,23 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1754031863037,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754288766956,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n-# version: '3.8'\r\n+version: '3.8'\r\n services:\r\n   nest-app:\r\n+    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n@@ -10,22 +11,34 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n+    restart: unless-stopped\r\n   mysql-container:\r\n-    image: mysql\r\n+    container_name: mysql-container\r\n+    image: mysql:8.0\r\n     volumes:\r\n       - /Users/guang/mysql-data:/var/lib/mysql\r\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n+      MYSQL_USER: meeting_user\r\n+      MYSQL_PASSWORD: meeting_password\r\n     networks:\r\n       - common-network\r\n+    restart: unless-stopped\r\n+    ports:\r\n+      - 3306:3306\r\n   redis-container:\r\n\\ No newline at end of file\n-    image: redis\r\n+    container_name: redis-container\r\n+    image: redis:7-alpine\r\n     volumes:\r\n       - /Users/guang/redis-data:/data\r\n     networks:\r\n       - common-network\r\n+    restart: unless-stopped\r\n+    ports:\r\n+      - 6379:6379\r\n networks:\r\n   common-network:\r\n-    driver: bridge\n+    driver: bridge\r\n+    name: meeting-room-network\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1754288800962,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n-version: '3.8'\r\n+# version: '3.8'\r\n services:\r\n   nest-app:\r\n-    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n@@ -11,34 +10,22 @@\n     ports:\r\n       - 3005:3005\r\n     networks:\r\n       - common-network\r\n-    restart: unless-stopped\r\n   mysql-container:\r\n-    container_name: mysql-container\r\n-    image: mysql:8.0\r\n+    image: mysql\r\n     volumes:\r\n       - /Users/guang/mysql-data:/var/lib/mysql\r\n     environment:\r\n       MYSQL_DATABASE: meeting_room_booking_system\r\n       MYSQL_ROOT_PASSWORD: guang\r\n-      MYSQL_USER: meeting_user\r\n-      MYSQL_PASSWORD: meeting_password\r\n     networks:\r\n       - common-network\r\n-    restart: unless-stopped\r\n-    ports:\r\n-      - 3306:3306\r\n   redis-container:\r\n-    container_name: redis-container\r\n-    image: redis:7-alpine\r\n+    image: redis\r\n     volumes:\r\n       - /Users/guang/redis-data:/data\r\n     networks:\r\n       - common-network\r\n-    restart: unless-stopped\r\n-    ports:\r\n-      - 6379:6379\r\n networks:\r\n   common-network:\r\n\\ No newline at end of file\n-    driver: bridge\r\n-    name: meeting-room-network\n+    driver: bridge\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1754288968512,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-# version: '3.8'\r\n+version: '3.8'\r\n services:\r\n   nest-app:\r\n     build:\r\n       context: ./\r\n"
                 }
             ],
             "date": 1754031863037,

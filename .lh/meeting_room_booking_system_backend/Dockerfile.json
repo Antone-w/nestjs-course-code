@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1754031460377,
@@ -20,6 +20,18 @@
                 {
                     "date": 1754270979027,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-FROM node:21.0 AS build-stage\r\n+FROM node:20.0 AS build-stage\r\n \r\n WORKDIR /app\r\n \r\n COPY package.json .\r\n@@ -12,9 +12,9 @@\n \r\n RUN npm run build\r\n \r\n # production stage\r\n-FROM node:21.0 AS production-stage\r\n+FROM node:20.0 AS production-stage\r\n \r\n COPY --from=build-stage /app/dist /app\r\n COPY --from=build-stage /app/package.json /app/package.json\r\n \r\n"
+                },
+                {
+                    "date": 1754287798995,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-FROM node:20.0 AS build-stage\r\n+FROM node:18.0 AS build-stage\r\n \r\n WORKDIR /app\r\n \r\n COPY package.json .\r\n@@ -12,9 +12,9 @@\n \r\n RUN npm run build\r\n \r\n # production stage\r\n-FROM node:20.0 AS production-stage\r\n+FROM node:18.0 AS production-stage\r\n \r\n COPY --from=build-stage /app/dist /app\r\n COPY --from=build-stage /app/package.json /app/package.json\r\n \r\n"
+                },
+                {
+                    "date": 1754287972856,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-FROM node:18.0 AS build-stage\r\n+FROM node:18.0-alpine3.14 AS build-stage\r\n \r\n WORKDIR /app\r\n \r\n COPY package.json .\r\n@@ -12,9 +12,9 @@\n \r\n RUN npm run build\r\n \r\n # production stage\r\n-FROM node:18.0 AS production-stage\r\n+FROM node:18.0-alpine3.14 AS production-stage\r\n \r\n COPY --from=build-stage /app/dist /app\r\n COPY --from=build-stage /app/package.json /app/package.json\r\n \r\n"
+                },
+                {
+                    "date": 1754288065941,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-FROM node:18.0-alpine3.14 AS build-stage\r\n+FROM node:20.0 AS build-stage\r\n \r\n WORKDIR /app\r\n \r\n COPY package.json .\r\n@@ -12,9 +12,9 @@\n \r\n RUN npm run build\r\n \r\n # production stage\r\n-FROM node:18.0-alpine3.14 AS production-stage\r\n+FROM node:20.0 AS production-stage\r\n \r\n COPY --from=build-stage /app/dist /app\r\n COPY --from=build-stage /app/package.json /app/package.json\r\n \r\n"
                 }
             ],
             "date": 1754031460377,
