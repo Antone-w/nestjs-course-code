@@ -1,5 +1,14 @@
-version: '3.8'
+# version: '3.8'
 services:
+  fe-app:
+    image: crpi-m80pc2fjhc17upa8.cn-chengdu.personal.cr.aliyuncs.com/qiang_qiang/qiang
+    ports:
+      - 80:80
+    depends_on:
+      - nest-app
+    restart: always
+    networks:
+      - common-network
   nest-app:
     container_name: nest-app
     build:
@@ -9,8 +18,8 @@ services:
       - mysql-container
       - redis-container
     restart: always
-    ports:
-      - 3005:3005
+    # ports:
+    #   - 3005:3005
     networks:
       - common-network
   mysql-container:

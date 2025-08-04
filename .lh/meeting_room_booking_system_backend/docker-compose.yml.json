@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 11,
+            "activePatchIndex": 15,
             "patches": [
                 {
                     "date": 1754031863037,
@@ -52,6 +52,22 @@
                 {
                     "date": 1754294124408,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n version: '3.8'\r\n services:\r\n   nest-app:\r\n+    container_name: nest-app\r\n     build:\r\n       context: ./\r\n       dockerfile: ./Dockerfile\r\n     depends_on:\r\n"
+                },
+                {
+                    "date": 1754298098030,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,14 @@\n version: '3.8'\r\n services:\r\n+  fe-app:\r\n+    image: fe-container:first\r\n+    ports:\r\n+      - 80:80\r\n+    depends_on:\r\n+      - nest-app\r\n+    networks:\r\n+      - common-network\r\n   nest-app:\r\n     container_name: nest-app\r\n     build:\r\n       context: ./\r\n@@ -8,10 +16,10 @@\n     depends_on:\r\n       - mysql-container\r\n       - redis-container\r\n     restart: always\r\n-    ports:\r\n-      - 3005:3005\r\n+    # ports:\r\n+    #   - 3005:3005\r\n     networks:\r\n       - common-network\r\n   mysql-container:\r\n     image: mysql\r\n"
+                },
+                {
+                    "date": 1754298353409,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-version: '3.8'\r\n+# version: '3.8'\r\n services:\r\n   fe-app:\r\n     image: fe-container:first\r\n     ports:\r\n"
+                },
+                {
+                    "date": 1754298586100,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n     ports:\r\n       - 80:80\r\n     depends_on:\r\n       - nest-app\r\n+    restart: always\r\n     networks:\r\n       - common-network\r\n   nest-app:\r\n     container_name: nest-app\r\n"
+                },
+                {
+                    "date": 1754299962162,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n # version: '3.8'\r\n services:\r\n   fe-app:\r\n-    image: fe-container:first\r\n+    image: crpi-m80pc2fjhc17upa8.cn-chengdu.personal.cr.aliyuncs.com/qiang_qiang/qiang\r\n     ports:\r\n       - 80:80\r\n     depends_on:\r\n       - nest-app\r\n"
                 }
             ],
             "date": 1754031863037,
